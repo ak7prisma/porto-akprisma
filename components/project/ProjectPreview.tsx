@@ -17,7 +17,7 @@ export default function ProjectPreview({ project }: Readonly<ProjectPreviewProps
       <div className="relative overflow-hidden rounded-lg border border-border bg-secondary shadow-sm">
         <div
           className={`relative w-full overflow-hidden transition-all duration-500 ease-in-out origin-top ${
-            viewMode === "mobile" ? "aspect-9/19 mx-auto w-3/5 my-6" : "aspect-16/10"
+            viewMode === "mobile" ? "aspect-16/11" : "aspect-16/10"
           }`}
         >
           <ProjectImage
@@ -25,11 +25,14 @@ export default function ProjectPreview({ project }: Readonly<ProjectPreviewProps
             alt={`${project.title} desktop view`}
             isVisible={viewMode === "desktop"}
           />
-          <ProjectImage
-            src={project.mobileImage}
-            alt={`${project.title} mobile view`}
-            isVisible={viewMode === "mobile"}
-          />
+          {project.mobileImage && (
+            <ProjectImage
+              src={project.mobileImage}
+              alt={`${project.title} mobile view`}
+              isVisible={viewMode === "mobile"}
+              className="absolute inset-y-0 left-1/2 w-2/5 -translate-x-1/2"
+            />
+          )}
         </div>
       </div>
 

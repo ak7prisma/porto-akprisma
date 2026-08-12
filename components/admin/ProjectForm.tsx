@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useActionState } from "react";
+import { useState, useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   saveProjectAction,
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/Button";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +18,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import type { PublicProject } from "@/types/content";
 
@@ -34,7 +36,14 @@ const emptyForm = {
   is_published: true,
 };
 
-export function ProjectForm({ project }: { project?: PublicProject }) {
+export function ProjectForm({
+  project,
+  onSaved,
+}: {
+  project?: PublicProject;
+  onSaved?: () => void;
+}) {
+  const router = useRouter();
   const [state, formAction] = useActionState(saveProjectAction, null);
   const [form, setForm] = useState(() =>
     project
@@ -56,6 +65,13 @@ export function ProjectForm({ project }: { project?: PublicProject }) {
 
   const set = (key: keyof typeof form, value: string | boolean | number) =>
     setForm((f) => ({ ...f, [key]: value }));
+
+  useEffect(() => {
+    if (state?.success) {
+      router.refresh();
+      onSaved?.();
+    }
+  }, [state, router, onSaved]);
 
   return (
     <form action={formAction} className="space-y-4">
@@ -108,27 +124,20 @@ export function ProjectForm({ project }: { project?: PublicProject }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="desktop_image">Desktop image URL</Label>
-          <Input
-            id="desktop_image"
-            name="desktop_image"
-            value={form.desktop_image}
-            onChange={(e) => set("desktop_image", e.target.value)}
-            placeholder="/Starshop.png or https://..."
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="mobile_image">Mobile image URL</Label>
-          <Input
-            id="mobile_image"
-            name="mobile_image"
-            value={form.mobile_image}
-            onChange={(e) => set("mobile_image", e.target.value)}
-            placeholder="/StarshopMobile.png or https://..."
-          />
-        </div>
+        <ImageUpload
+          label="Desktop image"
+          value={form.desktop_image}
+          onChange={(url) => set("desktop_image", url)}
+        />
+        <ImageUpload
+          label="Mobile image"
+          value={form.mobile_image}
+          onChange={(url) => set("mobile_image", url)}
+        />
       </div>
+
+      <input type="hidden" name="desktop_image" value={form.desktop_image} />
+      <input type="hidden" name="mobile_image" value={form.mobile_image} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -184,17 +193,14 @@ export function ProjectCreateDialog() {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogTrigger render={<Button variant="primary">+ New Project</Button>} />
+      <DialogContent className="sm:max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>New Project</DialogTitle>
           <DialogDescription>Add a new project to your portfolio.</DialogDescription>
         </DialogHeader>
-        <ProjectForm />
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
-        </DialogFooter>
+        <ProjectForm onSaved={() => setOpen(false)} />
+        <DialogFooter showCloseButton />
       </DialogContent>
     </Dialog>
   );
@@ -204,17 +210,14 @@ export function ProjectEditDialog({ project }: { project: PublicProject }) {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogTrigger render={<Button variant="outline" size="sm">Edit</Button>} />
+      <DialogContent className="sm:max-w-2xl max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Project</DialogTitle>
           <DialogDescription>Update project details.</DialogDescription>
         </DialogHeader>
-        <ProjectForm project={project} />
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
-        </DialogFooter>
+        <ProjectForm project={project} onSaved={() => setOpen(false)} />
+        <DialogFooter showCloseButton />
       </DialogContent>
     </Dialog>
   );

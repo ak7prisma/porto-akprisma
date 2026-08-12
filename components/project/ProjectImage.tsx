@@ -4,14 +4,20 @@ export default function ProjectImage({
   src,
   alt,
   isVisible,
-}: Readonly<{ src: string | null; alt: string; isVisible: boolean }>) {
+  className = "absolute inset-0",
+}: Readonly<{
+  src: string | null;
+  alt: string;
+  isVisible: boolean;
+  className?: string;
+}>) {
   if (!src) return null;
 
   return (
     <div
-      className={`absolute inset-0 transition-opacity duration-500 ${
+      className={`transition-opacity duration-500 ${
         isVisible ? "opacity-100" : "pointer-events-none opacity-0"
-      }`}
+      } ${className}`}
     >
       <Image
         src={src}
