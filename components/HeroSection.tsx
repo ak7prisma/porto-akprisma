@@ -3,7 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import ProfilCard from "@/components/hero/ProfilCard";
 import type { PublicHero, PublicSiteConfig } from "@/types/content";
 
