@@ -22,7 +22,7 @@ const navItems = [
   { name: "Messages", href: "/admin/messages", icon: Inbox },
 ];
 
-export default async function AdminLayout({
+export default async function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -60,7 +60,7 @@ export default async function AdminLayout({
         <form action={logoutAction}>
           <button
             type="submit"
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-400 transition-colors hover:bg-red-500/10 hover:text-red-400"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-slate-400 transition-colors hover:bg-red-500/10 hover:text-red-400"
           >
             <LogOut className="h-4 w-4" />
             Sign out
