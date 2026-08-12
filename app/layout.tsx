@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CursorAnimation from "@/components/CursorAnimation";
+import { Theme } from "@/components/Theme";
+import { Toaster } from "@/components/ui/sonner";
+import { getPublicSiteData } from "@/lib/content";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -20,33 +24,34 @@ export const metadata: Metadata = {
   description: "Website ini berisi portofolio dari Ahmad Kurnia Prisma",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const data = await getPublicSiteData();
+
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-slate-200 selection:bg-blue-600 selection:text-white`}>
-        
-        <div className="fixed inset-0 w-full h-full -z-10">
-            <div className="absolute inset-0 bg-black"></div>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-background text-foreground selection:bg-foreground selection:text-background`}
+      >
+        <Theme>
+          <div className="pointer-events-none fixed inset-0 -z-10">
+            <div className="absolute inset-0 bg-background" />
+            <div className="absolute -top-40 left-1/2 h-[480px] w-[720px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(161,161,170,0.08),transparent)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-size-[80px_80px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]" />
+          </div>
 
-            <div className="absolute top-0 left-0 w-full h-200 bg-linear-to-b from-blue-950/40 via-slate-950/60 to-black"></div>
-            
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[14px_24px] mask-[linear-gradient(to_bottom,black_10%,transparent_80%)]"></div>
-            
-            <div className="absolute top-0 left-0 right-0 h-125 bg-[radial-gradient(circle_800px_at_50%_-200px,#1e40af44,transparent)]"></div>
-        </div>
+          <Navbar />
 
-        <CursorAnimation />
-        <Navbar />
-        
-        <main className="min-h-screen relative overflow-x-hidden">
-          {children}
-        </main>
-        
-        <Footer />
+          <main className="relative min-h-screen overflow-x-hidden">
+            {children}
+          </main>
+
+          <Footer siteConfig={data.siteConfig} socials={data.socials} />
+        </Theme>
+        <Toaster />
       </body>
     </html>
   );

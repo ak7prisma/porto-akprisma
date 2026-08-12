@@ -19,19 +19,19 @@ export const Button = ({
   iconPosition = "right",
   ...props
 }: ButtonProps) => {
-  
-  //Basee
-  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none";
+  const baseStyles =
+    "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none";
 
-  //Variant
   const variants = {
-    primary: "bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] hover:scale-105",
-    secondary: "bg-slate-900/40 border border-white/10 text-white hover:bg-white/5 hover:border-white/20 backdrop-blur-sm",
-    outline: "border border-blue-500/50 text-blue-400 hover:bg-blue-500/10",
-    ghost: "bg-transparent hover:bg-white/5 text-slate-300 hover:text-white",
+    primary:
+      "bg-foreground text-background hover:bg-zinc-300",
+    secondary:
+      "bg-secondary text-foreground border border-border hover:bg-accent",
+    outline:
+      "bg-transparent border border-border text-muted-foreground hover:text-foreground hover:border-ring",
+    ghost: "bg-transparent text-muted-foreground hover:text-foreground",
   };
 
-  //Sizes
   const sizes = {
     sm: "px-4 py-2 text-sm",
     md: "px-6 py-3 text-base",
@@ -40,7 +40,7 @@ export const Button = ({
 
   const combinedClassName = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
 
-  const IconWrapper = icon ? <span className="group-hover:translate-x-0.5 transition-transform">{icon}</span> : null;
+  const IconWrapper = icon ? <span className="transition-transform group-hover:translate-x-0.5">{icon}</span> : null;
 
   if (href) {
     return (

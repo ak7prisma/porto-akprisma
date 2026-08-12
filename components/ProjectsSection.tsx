@@ -1,42 +1,45 @@
 "use client";
 
-import { motion } from "framer-motion";
-import ProjectCard from "./project/ProjectCard";
-import { projects } from "../data/projects";
-import { fadeUp } from "../lib/animation";
+import { motion, useReducedMotion } from "framer-motion";
+import { fadeUp } from "@/lib/animation";
+import ProjectCard from "@/components/project/ProjectCard";
+import type { PublicProject } from "@/types/content";
 
-export default function Projects() {
+export default function Projects({ projects }: { projects: PublicProject[] }) {
+  const reduce = useReducedMotion();
+  if (!projects.length) return null;
+
+  const [featured, ...rest] = projects;
+
   return (
-    <section id="projects" className="relative py-24 bg-slate-950 overflow-hidden">
-      
-      {/* Background Glow */}
-      <div className="absolute top-1/4 left-0 w-125 h-125 bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="container relative z-10 mx-auto px-6 max-w-7xl">
-        
-        {/* Header Section */}
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+    <section id="projects" className="relative py-24 lg:py-32">
+      <div className="container mx-auto max-w-7xl px-6">
+        <motion.div
+          initial={reduce ? false : "hidden"}
+          whileInView={reduce ? undefined : "visible"}
+          viewport={{ once: true, amount: 0.3 }}
           variants={fadeUp}
-          className="mb-20 text-center max-w-2xl mx-auto space-y-4"
+          className="mb-16 space-y-4"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-white">
-            Featured <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">Projects</span>
-          </h2>
-          <p className="text-slate-400">
-            From collaborative team projects to personal explorations in web technology
+          <p className="font-label text-sm uppercase tracking-[0.2em] text-muted-foreground">
+            Selected Work
           </p>
+          <h2 className="max-w-2xl text-4xl font-medium leading-[1.08] tracking-tight md:text-5xl">
+            Projects
+          </h2>
         </motion.div>
 
-        {/* Projects List */}
-        <div className="space-y-24 lg:space-y-32">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </div>
+        <div className="space-y-24">
+          <ProjectCard project={featured} index={0} featured />
 
+          {rest.length > 0 && (
+            <div className="grid grid-cols-1 gap-16 md:grid-cols-2">
+              {rest.map((project, index) => (
+                <ProjectCard key={project.id} project={project} index={index + 1} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

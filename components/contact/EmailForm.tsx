@@ -1,46 +1,75 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { fadeUp } from "../../lib/animation";
-import { useEmailForm } from "@/hooks/useEmailForm";
-import { contactData } from "../../data/contact";
-import { FormInput } from "../ui/FormInput";
-import { SubmitButton } from "../ui/SubmitButton";
+import { motion, useReducedMotion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { fadeUp } from "@/lib/animation";
+import { contactMessageSchema, type ContactMessageInput } from "@/lib/validations";
+import { Button } from "@/components/ui/Button";
+import { FormInput } from "@/components/ui/FormInput";
 
 export default function EmailForm() {
-  const { formData, status, handleChange, handleSubmit } = useEmailForm(contactData.formEndpoint);
+  const reduce = useReducedMotion();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactMessageInput>({
+    resolver: zodResolver(contactMessageSchema),
+  });
+
+  const onSubmit = async (values: ContactMessageInput) => {
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error ?? "Failed to send message");
+      }
+
+      toast.success("Message sent successfully!");
+      reset();
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong. Please try again."
+      );
+    }
+  };
 
   return (
-    <motion.div 
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+    <motion.div
+      initial={reduce ? false : "hidden"}
+      whileInView={reduce ? undefined : "visible"}
+      viewport={{ once: true, amount: 0.2 }}
       variants={fadeUp}
       className="relative"
     >
-      <form 
-        onSubmit={handleSubmit}
-        className="p-6 md:p-8 rounded-2xl bg-slate-900/50 border border-white/5 backdrop-blur-sm shadow-2xl space-y-6"
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-6 rounded-lg border border-border bg-secondary p-6 shadow-sm md:p-8"
       >
         <FormInput
           label="Name"
           id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
           placeholder="Alex"
-          required
+          error={errors.name?.message}
+          {...register("name")}
         />
 
         <FormInput
           label="Email"
           type="email"
           id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
           placeholder="alex@example.com"
-          required
+          error={errors.email?.message}
+          {...register("email")}
         />
 
         <FormInput
@@ -48,26 +77,15 @@ export default function EmailForm() {
           textarea={true}
           rows={5}
           id="message"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
           placeholder="Type your message..."
-          required
+          error={errors.message?.message}
+          {...register("message")}
         />
 
-        <SubmitButton isLoading={status === 'submitting'} />
-        
-        {status === 'success' && (
-           <p className="text-green-400 text-sm text-center">Message sent successfully!</p>
-        )}
-        {status === 'error' && (
-           <p className="text-red-400 text-sm text-center">Something went wrong. Please try again.</p>
-        )}
-
+        <Button type="submit" variant="primary" size="lg" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </Button>
       </form>
-
-      {/* Decorative Glow */}
-      <div className="absolute -inset-4 bg-linear-to-r from-blue-600 to-cyan-400 rounded-2xl opacity-5 blur-2xl -z-10" />
     </motion.div>
   );
 }

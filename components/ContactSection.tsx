@@ -1,25 +1,20 @@
-"use client";
+import ContactInfo from "@/components/contact/ContactInfo";
+import ContactForm from "@/components/contact/EmailForm";
+import type { PublicSiteConfig, PublicSocial } from "@/types/content";
 
-import ContactInfo from "./contact/ContactInfo";
-import ContactForm from "./contact/EmailForm";
-
-export default function Contact() {
+export default function Contact({
+  siteConfig,
+  socials,
+}: {
+  siteConfig: PublicSiteConfig;
+  socials: PublicSocial[];
+}) {
   return (
-    <section id="contact" className="relative py-24 bg-slate-950 overflow-hidden">
-      
-      {/* Background Elements */}
-      <div className="absolute -top-40 -right-40 w-125 h-125 bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
-
-      <div className="container relative z-10 mx-auto px-6 max-w-7xl">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          
-          {/* Left Section Info & Socials */}
-          <ContactInfo />
-
-          {/* Right Section Email Form */}
+    <section id="contact" className="relative py-24 lg:py-32">
+      <div className="container mx-auto max-w-7xl px-6">
+        <div className="grid gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+          <ContactInfo siteConfig={siteConfig} socials={socials} />
           <ContactForm />
-
         </div>
       </div>
     </section>

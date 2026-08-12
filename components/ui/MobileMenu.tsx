@@ -15,26 +15,26 @@ export default function MobileMenu({ isOpen, setIsOpen, links }: Readonly<Mobile
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-black/5 border-t border-white/10 overflow-hidden rounded-b-3xl backdrop-blur-xl"
+          className="absolute left-4 right-4 top-full mt-2 overflow-hidden rounded-2xl border border-border bg-zinc-950/95 backdrop-blur-md md:hidden"
         >
-          <div className="flex flex-col p-6 space-y-4 text-center">
+          <div className="flex flex-col p-4">
             {links.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="text-slate-300 hover:text-blue-400 py-2 block font-medium"
+                className="px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {link.name}
               </Link>
             ))}
-            <div className="pt-4 border-t border-white/10">
+            <div className="mt-2 border-t border-border pt-3">
               <Link
                 href="#contact"
                 onClick={() => setIsOpen(false)}
-                className="bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-full w-full block font-bold"
+                className="block rounded-full bg-foreground px-4 py-3 text-center text-sm font-semibold text-background"
               >
-                Contact Me
+                Contact
               </Link>
             </div>
           </div>

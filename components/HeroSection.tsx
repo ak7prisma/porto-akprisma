@@ -1,105 +1,107 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Download } from "lucide-react";
-import { Button } from "./ui/Button";
-import { Badge } from "./ui/Badge";
-import { fadeUp } from "../lib/animation";
-import { heroData } from "../data/hero";
-import HeroBg from "./hero/HeroBg";
-import ProfilCard from "./hero/ProfilCard";
-import ScrollDown from "./ui/ScrollDown";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import ProfilCard from "@/components/hero/ProfilCard";
+import type { PublicHero, PublicSiteConfig } from "@/types/content";
 
-export default function Hero() {
+const container = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+  },
+};
+
+const maskReveal = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
+export default function Hero({
+  hero,
+  siteConfig,
+}: {
+  hero: PublicHero;
+  siteConfig: PublicSiteConfig;
+}) {
+  const reduce = useReducedMotion();
+
   return (
-    <section 
-      id="hero" 
-      className="relative min-h-screen flex flex-col justify-center bg-slate-950 overflow-hidden pt-32 pb-20 px-6"
+    <section
+      id="hero"
+      className="relative flex min-h-[100dvh] items-center overflow-hidden pt-32 pb-20"
     >
-      {/* 1. Background Component */}
-      <HeroBg />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_20%_40%,rgba(161,161,170,0.06),transparent)]" />
 
-      {/* Main Content */}
-      <div className="container relative z-10 mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_0.6fr] gap-12 lg:gap-0 items-center">
-          
-          {/* Left Section */}
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-8 order-2 lg:order-1">
-            
-            {/* Badge */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Badge variant="glow" withDot>
-                {heroData.status}
+      <div className="container relative z-10 mx-auto max-w-7xl px-6">
+        <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+          <motion.div
+            variants={reduce ? undefined : container}
+            initial={reduce ? false : "hidden"}
+            animate={reduce ? {} : "visible"}
+            className="space-y-8"
+          >
+            <motion.div variants={maskReveal}>
+              <Badge variant="outline" withDot>
+                {hero.status}
               </Badge>
             </motion.div>
 
-            {/* Highlight */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.1}
-              className="space-y-4 w-full"
-            >
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-xl">
-                Hi, I'm <br />
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-400 to-teal-300">
-                  {heroData.name}
-                </span>
-              </h1>
-              <h2 className="text-2xl md:text-3xl text-slate-300 font-medium">
-                {heroData.role}
-              </h2>
-            </motion.div>
+            <div className="space-y-5">
+              <motion.p
+                variants={maskReveal}
+                className="font-label text-sm uppercase tracking-[0.2em] text-muted-foreground"
+              >
+                {hero.role}
+              </motion.p>
 
-            {/* Description */}
+              <motion.h1
+                variants={maskReveal}
+                className="text-5xl font-medium leading-[1.04] tracking-tight text-foreground md:text-6xl lg:text-7xl"
+              >
+                {hero.name}
+              </motion.h1>
+            </div>
+
             <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.2}
-              className="text-slate-400 text-base md:text-lg max-w-2xl leading-relaxed font-medium drop-shadow-md"
+              variants={maskReveal}
+              className="max-w-2xl text-lg leading-relaxed text-muted-foreground"
             >
-              {heroData.description}
+              {hero.description}
             </motion.p>
 
-            {/* Buttons */}
             <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.3}
-              className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2"
+              variants={maskReveal}
+              className="flex flex-wrap items-center gap-4 pt-2"
             >
               <Button href="#projects" variant="primary" size="lg" icon={<ArrowRight size={18} />}>
-                View Projects
+                View Work
               </Button>
-              <Button variant="secondary" size="lg" icon={<Download size={18}/>} href={heroData.cvLink}>
+              <Button
+                href={siteConfig.cvLink ?? "#"}
+                variant="secondary"
+                size="lg"
+                icon={<Download size={18} />}
+              >
                 Download CV
               </Button>
             </motion.div>
+          </motion.div>
 
-            {/* Scroll Down Indicator */}
-            <motion.div 
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              transition={{ duration: 0.5 }}
-              className="mt-10 w-full gap-3 animate-bounce cursor-pointer"
-            >
-              <ScrollDown />
-            </motion.div>
-          </div>
-
-          {/* Right Section */}
-          <div className="order-1 lg:order-2">
-             <ProfilCard />
-          </div>
-          
+          <motion.div
+            initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+            animate={reduce ? {} : { opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="hidden justify-end lg:flex"
+          >
+            <ProfilCard hero={hero} />
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,0 +1,32 @@
+# NEXT PLAN (lanjutan besok)
+
+## Status kerja (hari ini)
+- Fase 0-3 (stabilisasi build, arsitektur, Supabase CMS, data layer) ✅
+- Fase 5 (admin dashboard: auth + CRUD) ✅
+- Fase 4 (redesign UI sesuai DESIGN.md "Ashen Aurora") ✅
+- Build + lint hijau (13 routes + proxy middleware) ✅
+- Belum dikerjakan: Fase 6 dokumentasi, verifikasi admin live, upload storage
+
+## Prioritas
+1. Verifikasi admin live
+   - Buat user Supabase Auth (Dashboard -> Authentication -> Users -> Add user)
+   - Login /admin/login, uji CRUD tiap section (projects, hero, about, socials, site-config) + messages
+   - Pastikan fallback "Supabase not configured" sudah tidak muncul (env sudah terdeteksi)
+2. Fase 6 - Dokumentasi
+   - Rewrite README.md: stack akurat, setup + env, skema DB, cara pakai admin
+   - Buat AGENTS.md: command lint/build, konvensi, arsitektur (untuk konteks AI agent berikutnya)
+3. .env.example
+   - Ganti NEXT_PUBLIC_SUPABASE_ANON_KEY -> NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+     (resolver lib/supabase/env.ts sudah dukung keduanya; dokumentasikan yang dipakai)
+
+## Opsional / backlog
+- Visual QA redesign: screenshot mobile + desktop tiap section, cek spacing/aurora/kontras
+- Admin restyle konsisten dengan Ashen Aurora (sekarang masih slate/blue; scope di luar Fase 4)
+- Upload gambar project ke Supabase Storage (Fase 5 menyebut; form project masih input URL string)
+
+## Catatan penting (biar tidak kehilangan konteks)
+- Windows case-insensitive: custom components/ui/Button.tsx menimpa shadcn button.tsx -> selalu import @/components/ui/Button
+- Next 16: middleware -> proxy.ts (fungsi bernama `proxy`)
+- framer-motion 13: ease array di variants harus `as const` (mis. [0.16,1,0.3,1] as const) biar TS tidak error
+- Server actions: signature (prevState: ActionState, formData: FormData); revalidatePath("/", "layout")
+- Dua font aktif: Inter (body/heading) + JetBrains Mono (label mono uppercase tracking)

@@ -1,52 +1,47 @@
 import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { ProjectData } from "../../data/projects";
-import ActionProject from "./ActionProject";
+import ActionProject from "@/components/project/ActionProject";
+import type { PublicProject } from "@/types/content";
 
-export default function ProjectDetails({ project }: Readonly<{ project: ProjectData }>) {
+export default function ProjectDetails({
+  project,
+  featured = false,
+}: Readonly<{ project: PublicProject; featured?: boolean }>) {
   return (
-    <div className="w-full lg:w-2/5 space-y-6 text-center lg:text-left pt-2">
-      
-      {/* Header */}
-      <div className="space-y-2">
-        <span className="text-cyan-400 font-mono text-sm tracking-wider uppercase">
+    <div className={`space-y-6 ${featured ? "w-full lg:w-2/5" : "w-full"}`}>
+      <div className="space-y-3">
+        <p className="font-label text-xs uppercase tracking-[0.18em] text-muted-foreground">
           {project.category}
-        </span>
-        <h3 className="text-3xl font-bold text-white hover:text-blue-400 transition-colors">
+        </p>
+        <h3 className="text-2xl font-medium tracking-tight text-foreground md:text-3xl">
           {project.title}
         </h3>
       </div>
 
-      {/* Description */}
-      <p className="text-slate-400 text-lg leading-relaxed">
+      <p className="text-base leading-relaxed text-muted-foreground">
         {project.description}
       </p>
 
-      {/* Tech Stack Tags */}
-      <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+      <div className="flex flex-wrap gap-x-5 gap-y-2">
         {project.tech.map((tech) => (
-          <span
-            key={tech}
-            className="px-3 py-1 text-sm text-blue-300 bg-blue-900/20 border border-blue-500/20 rounded-full"
-          >
+          <span key={tech} className="font-label text-xs uppercase tracking-wider text-muted-foreground">
             {tech}
           </span>
         ))}
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center gap-4 justify-center lg:justify-start pt-4">
-        <ActionProject 
-          href={project.links.demo} 
-          label="Live Demo" 
-          icon={<ExternalLink size={18} />} 
-          variant="primary" 
+      <div className="flex items-center gap-3 pt-2">
+        <ActionProject
+          href={project.demoUrl}
+          label="Live Demo"
+          icon={<ExternalLink size={16} />}
+          variant="primary"
         />
-        <ActionProject 
-          href={project.links.github} 
-          label="Code" 
-          icon={<FaGithub size={18} />} 
-          variant="outline" 
+        <ActionProject
+          href={project.githubUrl}
+          label="Code"
+          icon={<FaGithub size={16} />}
+          variant="outline"
           lockedLabel="Private Code"
         />
       </div>

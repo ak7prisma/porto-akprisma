@@ -1,17 +1,27 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { PublicSiteConfig } from "@/types/content";
 
-export default function FooterLogo() {
+export default function FooterLogo({ siteConfig }: { siteConfig: PublicSiteConfig }) {
   return (
-    <div className="md:col-span-2 flex flex-col items-center md:items-start space-y-4">
-      {/* Logo */}
-      <Link href="/" className="text-2xl font-bold text-white tracking-tight flex items-center gap-1">
-        <Image src="/LogoPrisma.png" alt="Logo" width={150} height={150} className="group-hover:rotate-2 duration-300" />
+    <div className="md:col-span-2 flex flex-col items-center space-y-4 md:items-start">
+      <Link href="/" className="inline-flex items-center gap-2">
+        <span className="relative h-8 w-8 overflow-hidden rounded-md">
+          <Image
+            src="/LogoPrisma.png"
+            alt="Ahmad Kurnia Prisma"
+            fill
+            className="object-cover grayscale"
+            sizes="32px"
+          />
+        </span>
+        <span className="font-label text-base uppercase tracking-widest text-foreground">
+          A.K. Prisma
+        </span>
       </Link>
-      
-      {/* Deskripsi */}
-      <p className="text-sm leading-relaxed max-w-xs text-slate-500 mx-auto md:mx-0">
-        Menyelami kedalaman kode untuk menciptakan solusi digital yang fungsional dan estetik.
+
+      <p className="max-w-xs text-sm leading-relaxed text-muted-foreground md:mx-0">
+        {siteConfig.footerText}
       </p>
     </div>
   );

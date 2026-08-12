@@ -1,69 +1,77 @@
-import { motion } from "framer-motion";
-import { Mail, MapPin } from "lucide-react";
-import { fadeUp } from "../../lib/animation";
-import { contactData } from "../../data/contact";
+"use client";
 
-export default function ContactInfo() {
+import { motion, useReducedMotion } from "framer-motion";
+import { Mail, MapPin } from "lucide-react";
+import { fadeUp } from "@/lib/animation";
+import { getIcon } from "@/lib/icons";
+import type { PublicSiteConfig, PublicSocial } from "@/types/content";
+
+export default function ContactInfo({
+  siteConfig,
+  socials,
+}: {
+  siteConfig: PublicSiteConfig;
+  socials: PublicSocial[];
+}) {
+  const reduce = useReducedMotion();
+
   return (
-    <motion.div 
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+    <motion.div
+      initial={reduce ? false : "hidden"}
+      whileInView={reduce ? undefined : "visible"}
+      viewport={{ once: true, amount: 0.2 }}
       variants={fadeUp}
-      className="space-y-8"
+      className="space-y-10"
     >
-      {/* Header */}
-      <div>
-        <span className="text-blue-400 font-medium tracking-wider uppercase text-sm">
-          Contact Me
-        </span>
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-          Let's Work <br />
-          <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
-            Together
-          </span>
+      <div className="space-y-5">
+        <h2 className="text-4xl font-medium leading-[1.08] tracking-tight md:text-5xl">
+          Let&apos;s work together
         </h2>
-        <p className="text-slate-400 text-lg leading-relaxed max-w-md">
-          Have a project in mind or just want to say hi? 
-          I'm currently open to new opportunities and collaborations.
+        <p className="max-w-md text-base leading-relaxed text-muted-foreground">
+          Have a project in mind or just want to say hi? I&apos;m currently open to new
+          opportunities and collaborations.
         </p>
       </div>
 
-      {/* Contact Details */}
-      <div className="space-y-6">
-        <a 
-          href={`mailto:${contactData.email}`} 
-          className="flex items-center gap-4 text-slate-300 hover:text-white transition-colors group"
+      <div className="space-y-4">
+        <a
+          href={`mailto:${siteConfig.email}`}
+          className="group flex items-center gap-4 text-muted-foreground transition-colors hover:text-foreground"
         >
-          <div className="p-3 rounded-full bg-slate-900 border border-white/10 group-hover:border-blue-500/50 transition-colors">
-            <Mail className="w-5 h-5 text-blue-400" />
-          </div>
-          <span className="text-lg">{contactData.email}</span>
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-secondary transition-colors group-hover:border-ring">
+            <Mail size={18} />
+          </span>
+          <span className="font-label text-sm">{siteConfig.email}</span>
         </a>
 
-        <div className="flex items-center gap-4 text-slate-300">
-          <div className="p-3 rounded-full bg-slate-900 border border-white/10">
-            <MapPin className="w-5 h-5 text-cyan-400" />
-          </div>
-          <span className="text-lg">{contactData.location}</span>
+        <div className="flex items-center gap-4 text-muted-foreground">
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-secondary">
+            <MapPin size={18} />
+          </span>
+          <span className="font-label text-sm">{siteConfig.location}</span>
         </div>
       </div>
 
-      {/* Social Links */}
-      <div className="pt-8 border-t border-white/5">
-        <p className="text-slate-500 text-sm mb-4">Find me on</p>
-        <div className="flex gap-4">
-          {contactData.socials.map((social) => (
-            <a
-              key={social.name}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 rounded-xl bg-slate-900 text-slate-400 border border-white/5 hover:bg-slate-800 hover:text-white hover:border-blue-500/30 transition-all duration-300"
-            >
-              {social.icon}
-            </a>
-          ))}
+      <div className="border-t border-border pt-8">
+        <p className="mb-4 font-label text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          Find me on
+        </p>
+        <div className="flex gap-3">
+          {socials.map((social) => {
+            const Icon = getIcon(social.icon);
+            return (
+              <a
+                key={social.id}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.name}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-secondary text-muted-foreground transition-colors hover:border-ring hover:text-foreground"
+              >
+                <Icon size={17} />
+              </a>
+            );
+          })}
         </div>
       </div>
     </motion.div>

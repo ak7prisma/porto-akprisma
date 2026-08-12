@@ -22,10 +22,3 @@ export const staggerContainer: Variants = {
   },
 };
 
-//Floating Animation (Looping)
-export const floatAnimation: Variants = {
-  animate: {
-    y: [0, -20, 0],
-    transition: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-  },
-};
