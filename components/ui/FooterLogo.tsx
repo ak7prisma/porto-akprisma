@@ -8,7 +8,7 @@ export default function FooterLogo({ siteConfig }: { siteConfig: PublicSiteConfi
       <Link href="/" className="inline-flex items-center gap-2">
         <span className="relative h-8 w-8 overflow-hidden rounded-md">
           <Image
-            src="/LogoPrisma.png"
+            src="/LogoAKP.png"
             alt="Ahmad Kurnia Prisma"
             fill
             className="object-cover grayscale"
@@ -16,7 +16,7 @@ export default function FooterLogo({ siteConfig }: { siteConfig: PublicSiteConfi
           />
         </span>
         <span className="font-label text-base uppercase tracking-widest text-foreground">
-          A.K. Prisma
+           Prisma
         </span>
       </Link>
 

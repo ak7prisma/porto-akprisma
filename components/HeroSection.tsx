@@ -47,11 +47,6 @@ export default function Hero({
             animate={reduce ? {} : "visible"}
             className="space-y-8"
           >
-            <motion.div variants={maskReveal}>
-              <Badge variant="outline" withDot>
-                {hero.status}
-              </Badge>
-            </motion.div>
 
             <div className="space-y-5">
               <motion.p

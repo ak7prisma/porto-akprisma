@@ -15,7 +15,7 @@ export default function Navbar() {
     <header className="fixed left-0 right-0 top-0 z-50 flex justify-center px-4">
       <nav className="mt-4 flex w-full max-w-6xl items-center justify-between rounded-full border border-border bg-zinc-950/70 px-5 py-2.5 backdrop-blur-md">
         <Link href="/" className="flex items-center">
-          <Image src="/LogoPrisma.png" alt="Logo" width={130} height={40} priority className="h-9 w-auto object-contain" />
+          <Image src="/LogoAKP.png" alt="Logo" width={130} height={40} priority className="h-9 w-auto object-contain" />
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
