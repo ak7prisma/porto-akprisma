@@ -114,6 +114,8 @@ export const getPublicSiteData = cache(
           title: p.title,
           category: p.category,
           description: p.description,
+          problem: p.problem,
+          solution: p.solution,
           desktopImage: p.desktop_image,
           mobileImage: p.mobile_image,
           tech: p.tech,

@@ -104,6 +104,10 @@ export const siteContentFallback: PublicSiteData = {
       category: "E-Commerce & Digital Products",
       description:
         "A seamless digital top-up platform designed for gamers. Features digital product store and a highly responsive user interface optimized for mobile transactions.",
+      problem:
+        "Top-up digital yang biasa bikin pembeli ragu: proses bertele-tele, UI kurang responsif di HP, dan pencarian produk lambat.",
+      solution:
+        "Membangun store digital yang fokus pada kecepatan transaksi mobile: UI dioptimalkan untuk layar kecil, alur top-up dipangkas seminimal mungkin, dan daftar produk dirender cepat.",
       desktopImage: "/Starshop.png",
       mobileImage: "/StarshopMobile.png",
       tech: ["Next.js", "Tailwind CSS", "Supabase", "Vercel"],
@@ -116,6 +120,10 @@ export const siteContentFallback: PublicSiteData = {
       category: "Event & Organization",
       description:
         "The official event portal for HMIF Unsri's annual IT competition (Team Project). Built collaboratively to facilitate participant registration, event scheduling, and information dissemination with dynamic animations.",
+      problem:
+        "Portal kompetisi tahunan perlu menampung registrasi peserta, jadwal acara, dan pengumuman dalam satu tempat dengan trafik tinggi saat pendaftaran dibuka.",
+      solution:
+        "Membangun portal event kolaboratif: arsitektur data terpisah untuk registrasi/jadwal/informasi, animasi dinamis untuk menjaga engagement, dan flow pendaftaran yang jelas untuk peserta.",
       desktopImage: "/Srifoton.png",
       mobileImage: "/SrifotonMobile.png",
       tech: ["Next.js", "Tailwind CSS", "Supabase"],
@@ -128,6 +136,10 @@ export const siteContentFallback: PublicSiteData = {
       category: "Personal Utility App",
       description:
         "A personalized tracking application for K-Drama enthusiasts. Allows users to manage K-Drama watchlists. Focused on simple and responsive UI.",
+      problem:
+        "Drama list yang ada terlalu ribet untuk sekadar menandai drakor yang ingin atau sudah ditonton.",
+      solution:
+        "Membuat aplikasi checklist ringan dengan LocalStorage: tanpa backend, tanpa setup, cukup buka dan tandai, dengan UI simpel yang tetap responsif.",
       desktopImage: "/DrakorCheckList.png",
       mobileImage: "/DrakorChecklistMobile.png",
       tech: ["HTML", "CSS", "JavaScript", "LocalStorage", "Fun Project"],

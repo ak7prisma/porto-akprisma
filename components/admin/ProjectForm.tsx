@@ -33,6 +33,8 @@ const emptyForm = {
   title: "",
   category: "",
   description: "",
+  problem: "",
+  solution: "",
   desktop_image: "",
   mobile_image: "",
   tech: "",
@@ -58,6 +60,8 @@ export function ProjectForm({
           title: project.title,
           category: project.category,
           description: project.description,
+          problem: project.problem,
+          solution: project.solution,
           desktop_image: project.desktopImage ?? "",
           mobile_image: project.mobileImage ?? "",
           tech: project.tech.join(", "),
@@ -116,6 +120,31 @@ export function ProjectForm({
           onChange={(e) => set("description", e.target.value)}
           required
         />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="problem">Problem</Label>
+          <Textarea
+            id="problem"
+            name="problem"
+            rows={3}
+            value={form.problem}
+            onChange={(e) => set("problem", e.target.value)}
+            placeholder="Masalah yang dipecahkan proyek ini..."
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="solution">Solution</Label>
+          <Textarea
+            id="solution"
+            name="solution"
+            rows={3}
+            value={form.solution}
+            onChange={(e) => set("solution", e.target.value)}
+            placeholder="Bagaimana solusi yang kamu bangun..."
+          />
+        </div>
       </div>
 
       <div className="space-y-2">

@@ -90,6 +90,8 @@ export interface ProjectContent {
   title: string;
   category: string;
   description: string;
+  problem: string;
+  solution: string;
   desktop_image: string;
   mobile_image: string;
   tech: string[];
@@ -171,6 +173,8 @@ export interface PublicProject {
   title: string;
   category: string;
   description: string;
+  problem: string;
+  solution: string;
   desktopImage: string | null;
   mobileImage: string | null;
   tech: string[];

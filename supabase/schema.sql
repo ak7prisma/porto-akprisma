@@ -102,6 +102,8 @@ create table if not exists public.projects (
   title text not null,
   category text not null default '',
   description text not null default '',
+  problem text not null default '',
+  solution text not null default '',
   desktop_image text,
   mobile_image text,
   tech text[] not null default '{}',
@@ -143,6 +145,8 @@ create table if not exists public.contact_messages (
 -- ---------- Migration utk database yang sudah terlanjur dibuat (dijalankan aman berkali-kali) ----------
 alter table public.site_config add column if not exists contact_heading text not null default 'Let''s work together';
 alter table public.site_config add column if not exists contact_intro text not null default '';
+alter table public.projects add column if not exists problem text not null default '';
+alter table public.projects add column if not exists solution text not null default '';
 
 -- ---------- updated_at triggers (drop dulu agar aman dijalankan ulang) ----------
 drop trigger if exists trg_site_config_updated_at on public.site_config;
@@ -305,13 +309,13 @@ from (values
 ) as v(label, sub_label, icon, color, background, sort_order)
 where not exists (select 1 from public.stats);
 
-insert into public.projects (title, category, description, desktop_image, mobile_image, tech, demo_url, github_url, sort_order, is_published)
-select v.title, v.category, v.description, v.desktop_image, v.mobile_image, v.tech, v.demo_url, v.github_url, v.sort_order, v.is_published
+insert into public.projects (title, category, description, problem, solution, desktop_image, mobile_image, tech, demo_url, github_url, sort_order, is_published)
+select v.title, v.category, v.description, v.problem, v.solution, v.desktop_image, v.mobile_image, v.tech, v.demo_url, v.github_url, v.sort_order, v.is_published
 from (values
-  ('StarShop', 'E-Commerce & Digital Products', 'A seamless digital top-up platform designed for gamers. Features digital product store and a highly responsive user interface optimized for mobile transactions.', '/Starshop.png', '/StarshopMobile.png', array['Next.js','Tailwind CSS','Supabase','Vercel'], 'https://starshop-jf2g.vercel.app', 'https://github.com/ak7prisma/starshop.git', 0, true),
-  ('Srifoton Website', 'Event & Organization', 'The official event portal for HMIF Unsri''s annual IT competition (Team Project). Built collaboratively to facilitate participant registration, event scheduling, and information dissemination with dynamic animations.', '/Srifoton.png', '/SrifotonMobile.png', array['Next.js','Tailwind CSS','Supabase'], 'https://srifoton.hmifunsri.com', null, 1, true),
-  ('My Drakor Checklist', 'Personal Utility App', 'A personalized tracking application for K-Drama enthusiasts. Allows users to manage K-Drama watchlists. Focused on simple and responsive UI.', '/DrakorCheckList.png', '/DrakorChecklistMobile.png', array['HTML','CSS','JavaScript','LocalStorage','Fun Project'], null, 'https://github.com/username/repo', 2, true)
-) as v(title, category, description, desktop_image, mobile_image, tech, demo_url, github_url, sort_order, is_published)
+  ('StarShop', 'E-Commerce & Digital Products', 'A seamless digital top-up platform designed for gamers. Features digital product store and a highly responsive user interface optimized for mobile transactions.', 'Top-up digital yang biasa bikin pembeli ragu: proses bertele-tele, UI kurang responsif di HP, dan pencarian produk lambat.', 'Membangun store digital yang fokus pada kecepatan transaksi mobile: UI dioptimalkan untuk layar kecil, alur top-up dipangkas seminimal mungkin, dan daftar produk dirender cepat.', '/Starshop.png', '/StarshopMobile.png', array['Next.js','Tailwind CSS','Supabase','Vercel'], 'https://starshop-jf2g.vercel.app', 'https://github.com/ak7prisma/starshop.git', 0, true),
+  ('Srifoton Website', 'Event & Organization', 'The official event portal for HMIF Unsri''s annual IT competition (Team Project). Built collaboratively to facilitate participant registration, event scheduling, and information dissemination with dynamic animations.', 'Portal kompetisi tahunan perlu menampung registrasi peserta, jadwal acara, dan pengumuman dalam satu tempat dengan trafik tinggi saat pendaftaran dibuka.', 'Membangun portal event kolaboratif: arsitektur data terpisah untuk registrasi/jadwal/informasi, animasi dinamis untuk menjaga engagement, dan flow pendaftaran yang jelas untuk peserta.', '/Srifoton.png', '/SrifotonMobile.png', array['Next.js','Tailwind CSS','Supabase'], 'https://srifoton.hmifunsri.com', null, 1, true),
+  ('My Drakor Checklist', 'Personal Utility App', 'A personalized tracking application for K-Drama enthusiasts. Allows users to manage K-Drama watchlists. Focused on simple and responsive UI.', 'Drama list yang ada terlalu ribet untuk sekadar menandai drakor yang ingin atau sudah ditonton.', 'Membuat aplikasi checklist ringan dengan LocalStorage: tanpa backend, tanpa setup, cukup buka dan tandai, dengan UI simpel yang tetap responsif.', '/DrakorCheckList.png', '/DrakorChecklistMobile.png', array['HTML','CSS','JavaScript','LocalStorage','Fun Project'], null, 'https://github.com/username/repo', 2, true)
+) as v(title, category, description, problem, solution, desktop_image, mobile_image, tech, demo_url, github_url, sort_order, is_published)
 where not exists (select 1 from public.projects);
 
 insert into public.socials (name, href, icon, sort_order)
