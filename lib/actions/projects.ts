@@ -10,11 +10,18 @@ const projectSchema = z.object({
   title: z.string().min(1),
   category: z.string().min(1),
   description: z.string().min(1),
+  problem: z.string().default(""),
+  solution: z.string().default(""),
   tech: z.string().default(""),
   desktop_image: z.string().default(""),
   mobile_image: z.string().default(""),
   demo_url: z.string().default(""),
   github_url: z.string().default(""),
+  sort_order: z.coerce.number().int().min(0).default(0),
+  is_published: z
+    .union([z.literal("on"), z.literal("true"), z.boolean()])
+    .optional()
+    .transform((v) => v === "on" || v === "true" || v === true),
 });
 
 export async function saveProjectAction(
@@ -26,11 +33,15 @@ export async function saveProjectAction(
     title: formData.get("title"),
     category: formData.get("category"),
     description: formData.get("description"),
+    problem: formData.get("problem"),
+    solution: formData.get("solution"),
     tech: formData.get("tech"),
     desktop_image: formData.get("desktop_image"),
     mobile_image: formData.get("mobile_image"),
     demo_url: formData.get("demo_url"),
     github_url: formData.get("github_url"),
+    sort_order: formData.get("sort_order") ?? 0,
+    is_published: formData.get("is_published") ?? false,
   });
 
   if (!parsed.success) {
@@ -46,8 +57,6 @@ export async function saveProjectAction(
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean),
-    sort_order: 0,
-    is_published: true,
   };
 
   const { error } = id
@@ -64,6 +73,19 @@ export async function saveProjectAction(
 export async function deleteProjectAction(id: number) {
   const supabase = await createClient();
   const { error } = await supabase.from("projects").delete().eq("id", id);
+  if (error) return { error: error.message };
+
+  revalidatePath("/", "layout");
+  revalidatePath("/admin/projects");
+  return { success: true };
+}
+
+export async function toggleProjectPublishAction(id: number, isPublished: boolean) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("projects")
+    .update({ is_published: isPublished })
+    .eq("id", id);
   if (error) return { error: error.message };
 
   revalidatePath("/", "layout");

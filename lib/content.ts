@@ -66,6 +66,8 @@ export const getPublicSiteData = cache(
         location: siteConfig.data?.location ?? siteContentFallback.siteConfig.location,
         cvLink: siteConfig.data?.cv_link ?? siteContentFallback.siteConfig.cvLink,
         footerText: siteConfig.data?.footer_text ?? siteContentFallback.siteConfig.footerText,
+        contactHeading: siteConfig.data?.contact_heading || siteContentFallback.siteConfig.contactHeading,
+        contactIntro: siteConfig.data?.contact_intro || siteContentFallback.siteConfig.contactIntro,
       },
       hero: {
         name: hero.data?.name ?? siteContentFallback.hero.name,
@@ -112,6 +114,8 @@ export const getPublicSiteData = cache(
           title: p.title,
           category: p.category,
           description: p.description,
+          problem: p.problem,
+          solution: p.solution,
           desktopImage: p.desktop_image,
           mobileImage: p.mobile_image,
           tech: p.tech,

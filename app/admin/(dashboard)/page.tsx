@@ -2,7 +2,11 @@ import Link from "next/link";
 import {
   FolderKanban,
   User,
+  GraduationCap,
+  Layers,
+  ChartColumn,
   Share2,
+  ContactRound,
   Settings,
   Inbox,
   ArrowRight,
@@ -12,6 +16,11 @@ import { createClient } from "@/lib/supabase/server";
 const cards = [
   { name: "Projects", href: "/admin/projects", icon: FolderKanban, desc: "Manage portfolio projects" },
   { name: "Hero", href: "/admin/hero", icon: User, desc: "Edit hero section content" },
+  { name: "About", href: "/admin/about", icon: User, desc: "Edit about headline and bios" },
+  { name: "Education", href: "/admin/education", icon: GraduationCap, desc: "Edit education entry" },
+  { name: "Stacks", href: "/admin/stacks", icon: Layers, desc: "Manage skill stacks" },
+  { name: "Stats", href: "/admin/stats", icon: ChartColumn, desc: "Manage stats highlights" },
+  { name: "Contact", href: "/admin/contact", icon: ContactRound, desc: "Edit contact info and socials" },
   { name: "Socials", href: "/admin/socials", icon: Share2, desc: "Manage social links" },
   { name: "Site Config", href: "/admin/site-config", icon: Settings, desc: "Site name, email, CV link" },
   { name: "Messages", href: "/admin/messages", icon: Inbox, desc: "View contact messages" },

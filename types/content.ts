@@ -6,6 +6,8 @@ export interface SiteConfig {
   location: string;
   cv_link: string | null;
   footer_text: string;
+  contact_heading: string;
+  contact_intro: string;
   created_at: string;
   updated_at: string;
 }
@@ -88,6 +90,8 @@ export interface ProjectContent {
   title: string;
   category: string;
   description: string;
+  problem: string;
+  solution: string;
   desktop_image: string;
   mobile_image: string;
   tech: string[];
@@ -122,6 +126,8 @@ export interface PublicSiteConfig {
   location: string;
   cvLink: string | null;
   footerText: string;
+  contactHeading: string;
+  contactIntro: string;
 }
 
 export interface PublicHero {
@@ -167,6 +173,8 @@ export interface PublicProject {
   title: string;
   category: string;
   description: string;
+  problem: string;
+  solution: string;
   desktopImage: string | null;
   mobileImage: string | null;
   tech: string[];

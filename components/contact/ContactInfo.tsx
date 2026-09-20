@@ -25,11 +25,10 @@ export default function ContactInfo({
     >
       <div className="space-y-5">
         <h2 className="text-4xl font-medium leading-[1.08] tracking-tight md:text-5xl">
-          Let&apos;s work together
+          {siteConfig.contactHeading}
         </h2>
         <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-          Have a project in mind or just want to say hi? I&apos;m currently open to new
-          opportunities and collaborations.
+          {siteConfig.contactIntro}
         </p>
       </div>
 

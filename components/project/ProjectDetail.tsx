@@ -22,13 +22,45 @@ export default function ProjectDetails({
         {project.description}
       </p>
 
-      <div className="flex flex-wrap gap-x-5 gap-y-2">
-        {project.tech.map((tech) => (
-          <span key={tech} className="font-label text-xs uppercase tracking-wider text-muted-foreground">
-            {tech}
-          </span>
-        ))}
-      </div>
+      {(project.problem || project.solution) && (
+        <div className="space-y-4 rounded-lg border border-border bg-secondary/50 p-5">
+          {project.problem && (
+            <div className="space-y-1.5">
+              <p className="font-label text-xs uppercase tracking-wider text-muted-foreground">
+                Problem
+              </p>
+              <p className="text-sm leading-relaxed text-foreground/80">{project.problem}</p>
+            </div>
+          )}
+          {project.problem && project.solution && <div className="h-px bg-border" />}
+          {project.solution && (
+            <div className="space-y-1.5">
+              <p className="font-label text-xs uppercase tracking-wider text-muted-foreground">
+                Solution
+              </p>
+              <p className="text-sm leading-relaxed text-foreground/80">{project.solution}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {project.tech.length > 0 && (
+        <div className="space-y-2 pt-1">
+          <p className="font-label text-[11px] uppercase tracking-[0.18em] text-muted-foreground/70">
+            Stack
+          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            {project.tech.map((tech) => (
+              <span
+                key={tech}
+                className="font-label text-[11px] uppercase tracking-wider text-muted-foreground/60"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center gap-3 pt-2">
         <ActionProject

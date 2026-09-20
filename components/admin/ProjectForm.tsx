@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   saveProjectAction,
   deleteProjectAction,
+  toggleProjectPublishAction,
 } from "@/lib/actions/projects";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,11 +23,18 @@ import {
 } from "@/components/ui/dialog";
 import type { PublicProject } from "@/types/content";
 
+export type AdminProject = PublicProject & {
+  sortOrder: number;
+  isPublished: boolean;
+};
+
 const emptyForm = {
   id: undefined as number | undefined,
   title: "",
   category: "",
   description: "",
+  problem: "",
+  solution: "",
   desktop_image: "",
   mobile_image: "",
   tech: "",
@@ -40,7 +48,7 @@ export function ProjectForm({
   project,
   onSaved,
 }: {
-  project?: PublicProject;
+  project?: AdminProject;
   onSaved?: () => void;
 }) {
   const router = useRouter();
@@ -52,13 +60,15 @@ export function ProjectForm({
           title: project.title,
           category: project.category,
           description: project.description,
+          problem: project.problem,
+          solution: project.solution,
           desktop_image: project.desktopImage ?? "",
           mobile_image: project.mobileImage ?? "",
           tech: project.tech.join(", "),
           demo_url: project.demoUrl ?? "",
           github_url: project.githubUrl ?? "",
-          sort_order: 0,
-          is_published: true,
+          sort_order: project.sortOrder,
+          is_published: project.isPublished,
         }
       : emptyForm
   );
@@ -112,6 +122,31 @@ export function ProjectForm({
         />
       </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="problem">Problem</Label>
+          <Textarea
+            id="problem"
+            name="problem"
+            rows={3}
+            value={form.problem}
+            onChange={(e) => set("problem", e.target.value)}
+            placeholder="Masalah yang dipecahkan proyek ini..."
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="solution">Solution</Label>
+          <Textarea
+            id="solution"
+            name="solution"
+            rows={3}
+            value={form.solution}
+            onChange={(e) => set("solution", e.target.value)}
+            placeholder="Bagaimana solusi yang kamu bangun..."
+          />
+        </div>
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="tech">Tech stack (comma separated)</Label>
         <Input
@@ -162,6 +197,32 @@ export function ProjectForm({
         </div>
       </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="sort_order">Sort order</Label>
+          <Input
+            id="sort_order"
+            name="sort_order"
+            type="number"
+            min={0}
+            value={form.sort_order}
+            onChange={(e) => set("sort_order", Number(e.target.value))}
+          />
+        </div>
+        <div className="flex h-full items-end pb-1">
+          <label className="flex items-center gap-2 text-sm text-slate-300">
+            <input
+              type="checkbox"
+              name="is_published"
+              checked={form.is_published}
+              onChange={(e) => set("is_published", e.target.checked)}
+              className="h-4 w-4 rounded border-slate-600 bg-slate-900 accent-blue-500"
+            />
+            Published (visible on site)
+          </label>
+        </div>
+      </div>
+
       {state?.error && (
         <p className="text-sm text-red-400">{String(state.error)}</p>
       )}
@@ -173,7 +234,7 @@ export function ProjectForm({
   );
 }
 
-export function ProjectDeleteButton({ project }: { project: PublicProject }) {
+export function ProjectDeleteButton({ project }: { project: AdminProject }) {
   const router = useRouter();
   return (
     <form
@@ -186,6 +247,26 @@ export function ProjectDeleteButton({ project }: { project: PublicProject }) {
         Delete
       </Button>
     </form>
+  );
+}
+
+export function ProjectPublishToggle({ project }: { project: AdminProject }) {
+  const router = useRouter();
+  const [pending, setPending] = useState(false);
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      disabled={pending}
+      onClick={async () => {
+        setPending(true);
+        await toggleProjectPublishAction(project.id, !project.isPublished);
+        router.refresh();
+        setPending(false);
+      }}
+    >
+      {project.isPublished ? "Unpublish" : "Publish"}
+    </Button>
   );
 }
 
@@ -206,7 +287,7 @@ export function ProjectCreateDialog() {
   );
 }
 
-export function ProjectEditDialog({ project }: { project: PublicProject }) {
+export function ProjectEditDialog({ project }: { project: AdminProject }) {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
