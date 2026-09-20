@@ -17,6 +17,9 @@ export const siteContentFallback: PublicSiteData = {
       "https://drive.google.com/file/d/1lxbcCcK6ekVMB_NpDLkihNDLCSNAkPGg/view?usp=sharing",
     footerText:
       "Menyelami kedalaman kode untuk menciptakan solusi digital yang fungsional dan estetik.",
+    contactHeading: "Let's work together",
+    contactIntro:
+      "Have a project in mind or just want to say hi? I'm currently open to new opportunities and collaborations.",
   },
 
   hero: {

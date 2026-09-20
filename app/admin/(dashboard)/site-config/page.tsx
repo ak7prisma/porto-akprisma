@@ -26,6 +26,8 @@ export default async function AdminSiteConfigPage() {
         location: configRow.location,
         cvLink: configRow.cv_link,
         footerText: configRow.footer_text,
+        contactHeading: configRow.contact_heading ?? fallback.siteConfig.contactHeading,
+        contactIntro: configRow.contact_intro ?? fallback.siteConfig.contactIntro,
       }
     : fallback.siteConfig;
 

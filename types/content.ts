@@ -6,6 +6,8 @@ export interface SiteConfig {
   location: string;
   cv_link: string | null;
   footer_text: string;
+  contact_heading: string;
+  contact_intro: string;
   created_at: string;
   updated_at: string;
 }
@@ -122,6 +124,8 @@ export interface PublicSiteConfig {
   location: string;
   cvLink: string | null;
   footerText: string;
+  contactHeading: string;
+  contactIntro: string;
 }
 
 export interface PublicHero {
