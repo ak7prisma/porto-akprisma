@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useActionState } from "react";
 import { updateContactAction } from "@/lib/actions/content";
+import { useActionToast } from "@/components/admin/useActionToast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +22,7 @@ export default function ContactSettingsForm({
   configId?: string;
 }) {
   const [state, formAction] = useActionState(updateContactAction, null);
+  useActionToast(state, { success: "Contact settings saved successfully" });
   const [form, setForm] = useState({
     contactHeading: config.contactHeading,
     contactIntro: config.contactIntro,

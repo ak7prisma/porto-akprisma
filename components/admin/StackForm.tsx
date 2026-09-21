@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/Button";
+import { useActionToast } from "@/components/admin/useActionToast";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import type { PublicStack } from "@/types/content";
 
 export function StackForm({ stack }: { stack?: PublicStack }) {
@@ -19,6 +21,7 @@ export function StackForm({ stack }: { stack?: PublicStack }) {
     stack ? updateStackAction : createStackAction,
     null
   );
+  useActionToast(state, { success: stack ? "Stack updated" : "Stack added" });
   const [form, setForm] = useState({
     title: stack?.title ?? "",
     description: stack?.description ?? "",
@@ -112,18 +115,24 @@ export function StackForm({ stack }: { stack?: PublicStack }) {
 export function StackDeleteButton({ stack }: { stack: PublicStack }) {
   const router = useRouter();
   return (
-    <form
-      action={async (fd: FormData) => {
+    <ConfirmDialog
+      title={`Delete "${stack.title}"?`}
+      description="Nama stack akan dihapus permanen dan tidak bisa dikembalikan."
+      confirmLabel="Delete"
+      successMessage="Stack deleted"
+      trigger={
+        <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
+          Delete
+        </Button>
+      }
+      onConfirm={async () => {
+        const fd = new FormData();
+        fd.append("id", stack.id);
         const result = await deleteStackAction(null, fd);
-        if (result?.error) console.error(result.error);
         router.refresh();
+        return result;
       }}
-    >
-      <input type="hidden" name="id" value={stack.id} />
-      <Button type="submit" variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
-        Delete
-      </Button>
-    </form>
+    />
   );
 }
 

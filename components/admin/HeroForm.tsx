@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useActionState } from "react";
 import { updateHeroAction } from "@/lib/actions/content";
+import { useActionToast } from "@/components/admin/useActionToast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +18,7 @@ export default function HeroForm({
   heroId?: string;
 }) {
   const [state, formAction] = useActionState(updateHeroAction, null);
+  useActionToast(state, { success: "Hero updated successfully" });
   const [form, setForm] = useState({
     name: hero.name,
     role: hero.role,

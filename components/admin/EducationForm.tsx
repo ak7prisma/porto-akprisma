@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useActionState } from "react";
 import { updateEducationAction } from "@/lib/actions/content";
+import { useActionToast } from "@/components/admin/useActionToast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +18,7 @@ export default function EducationForm({
   educationId?: string;
 }) {
   const [state, formAction] = useActionState(updateEducationAction, null);
+  useActionToast(state, { success: "Education updated successfully" });
   const [form, setForm] = useState({
     year: education.year,
     degree: education.degree,

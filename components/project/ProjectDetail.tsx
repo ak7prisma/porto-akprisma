@@ -10,9 +10,16 @@ export default function ProjectDetails({
   return (
     <div className={`space-y-6 ${featured ? "w-full lg:w-2/5" : "w-full"}`}>
       <div className="space-y-3">
-        <p className="font-label text-xs uppercase tracking-[0.18em] text-muted-foreground">
-          {project.category}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="font-label text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            {project.category}
+          </p>
+          {project.role && (
+            <span className="rounded-full border border-border bg-secondary/60 px-2.5 py-0.5 font-label text-[11px] uppercase tracking-wider text-foreground/80">
+              {project.role}
+            </span>
+          )}
+        </div>
         <h3 className="text-2xl font-medium tracking-tight text-foreground md:text-3xl">
           {project.title}
         </h3>

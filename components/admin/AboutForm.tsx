@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useActionState } from "react";
 import { updateAboutAction } from "@/lib/actions/content";
+import { useActionToast } from "@/components/admin/useActionToast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +18,7 @@ export default function AboutForm({
   aboutId?: string;
 }) {
   const [state, formAction] = useActionState(updateAboutAction, null);
+  useActionToast(state, { success: "About updated successfully" });
   const [headline, setHeadline] = useState(about.headline);
   const [bios, setBios] = useState<string[]>(about.bios.map((b) => b.content));
 

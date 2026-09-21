@@ -89,6 +89,7 @@ export interface ProjectContent {
   id: number;
   title: string;
   category: string;
+  role: string;
   description: string;
   problem: string;
   solution: string;
@@ -172,6 +173,7 @@ export interface PublicProject {
   id: number;
   title: string;
   category: string;
+  role: string;
   description: string;
   problem: string;
   solution: string;

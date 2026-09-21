@@ -22,6 +22,7 @@ async function getProjects(): Promise<AdminProject[]> {
     id: p.id,
     title: p.title,
     category: p.category,
+    role: p.role ?? "",
     description: p.description,
     problem: p.problem ?? "",
     solution: p.solution ?? "",

@@ -2,6 +2,7 @@
 
 import { useState, useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import {
   saveProjectAction,
   deleteProjectAction,
@@ -21,6 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import type { PublicProject } from "@/types/content";
 
 export type AdminProject = PublicProject & {
@@ -32,6 +34,7 @@ const emptyForm = {
   id: undefined as number | undefined,
   title: "",
   category: "",
+  role: "",
   description: "",
   problem: "",
   solution: "",
@@ -59,6 +62,7 @@ export function ProjectForm({
           id: project.id,
           title: project.title,
           category: project.category,
+          role: project.role,
           description: project.description,
           problem: project.problem,
           solution: project.solution,
@@ -78,10 +82,13 @@ export function ProjectForm({
 
   useEffect(() => {
     if (state?.success) {
+      toast.success(project ? "Project updated successfully" : "Project created successfully");
       router.refresh();
       onSaved?.();
+    } else if (state?.error) {
+      toast.error(String(state.error));
     }
-  }, [state, router, onSaved]);
+  }, [state, router, onSaved, project]);
 
   return (
     <form action={formAction} className="space-y-4">
@@ -108,6 +115,17 @@ export function ProjectForm({
             required
           />
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="role">Role / Position</Label>
+        <Input
+          id="role"
+          name="role"
+          value={form.role}
+          onChange={(e) => set("role", e.target.value)}
+          placeholder="Front-End Developer"
+        />
       </div>
 
       <div className="space-y-2">
@@ -237,16 +255,22 @@ export function ProjectForm({
 export function ProjectDeleteButton({ project }: { project: AdminProject }) {
   const router = useRouter();
   return (
-    <form
-      action={async () => {
-        await deleteProjectAction(project.id);
+    <ConfirmDialog
+      title={`Delete "${project.title}"?`}
+      description="Project akan dihapus permanen dan tidak bisa dikembalikan."
+      confirmLabel="Delete"
+      successMessage="Project deleted"
+      trigger={
+        <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
+          Delete
+        </Button>
+      }
+      onConfirm={async () => {
+        const result = await deleteProjectAction(project.id);
         router.refresh();
+        return result;
       }}
-    >
-      <Button type="submit" variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
-        Delete
-      </Button>
-    </form>
+    />
   );
 }
 
@@ -260,7 +284,9 @@ export function ProjectPublishToggle({ project }: { project: AdminProject }) {
       disabled={pending}
       onClick={async () => {
         setPending(true);
-        await toggleProjectPublishAction(project.id, !project.isPublished);
+        const result = await toggleProjectPublishAction(project.id, !project.isPublished);
+        if (result?.error) toast.error(result.error);
+        else toast.success(project.isPublished ? "Project unpublished" : "Project published");
         router.refresh();
         setPending(false);
       }}
