@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/admin/SubmitButton";
 import { useActionToast } from "@/components/admin/useActionToast";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import type { PublicStack } from "@/types/content";
@@ -105,9 +106,9 @@ export function StackForm({ stack }: { stack?: PublicStack }) {
 
       {state?.error && <p className="text-sm text-red-400">{String(state.error)}</p>}
 
-      <Button type="submit" variant="primary" size="sm" className="w-full">
+      <SubmitButton variant="primary" size="sm" className="w-full" pendingLabel="Saving...">
         {stack ? "Update stack" : "Add stack"}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

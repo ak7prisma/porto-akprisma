@@ -7,7 +7,7 @@ import { useActionToast } from "@/components/admin/useActionToast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/admin/SubmitButton";
 import type { PublicHero } from "@/types/content";
 
 export default function HeroForm({
@@ -110,9 +110,9 @@ export default function HeroForm({
         </p>
       )}
 
-      <Button type="submit" variant="primary" size="lg" className="w-full">
+      <SubmitButton variant="primary" size="lg" className="w-full" pendingLabel="Saving...">
         Save Hero
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

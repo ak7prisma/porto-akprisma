@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getPublicSiteData } from "@/lib/content";
+import { getPublicSiteData, isSupabaseConfigured } from "@/lib/content";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function PublicLayout({
   children,
@@ -8,6 +9,10 @@ export default async function PublicLayout({
   children: React.ReactNode;
 }>) {
   const data = await getPublicSiteData();
+
+  const isAdmin = isSupabaseConfigured()
+    ? (await (await createClient()).auth.getUser()).data.user != null
+    : false;
 
   return (
     <>
@@ -17,7 +22,7 @@ export default async function PublicLayout({
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-size-[80px_80px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]" />
       </div>
 
-      <Navbar />
+      <Navbar isAdmin={isAdmin} />
 
       <main className="relative min-h-screen overflow-x-hidden">
         {children}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -69,6 +70,7 @@ export function ConfirmDialog({
             disabled={pending}
             onClick={handleConfirm}
           >
+            {pending && <Loader2 className="size-4 animate-spin" />}
             {pending ? "Please wait..." : confirmLabel}
           </Button>
         </DialogFooter>

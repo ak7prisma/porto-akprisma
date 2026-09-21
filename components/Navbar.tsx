@@ -8,7 +8,7 @@ import MobileMenu from "./ui/MobileMenu";
 import { Button } from "./ui/Button";
 import { navLinks, contactLink } from "@/data/navlink";
 
-export default function Navbar() {
+export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -30,7 +30,12 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 md:flex">
+          {isAdmin && (
+            <Button href="/admin" variant="outline" size="sm" className="font-semibold">
+              Admin
+            </Button>
+          )}
           <Button
             href={contactLink.href}
             variant="primary"
@@ -53,7 +58,12 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} links={navLinks} />
+      <MobileMenu
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        links={navLinks}
+        adminLink={isAdmin ? { name: "Admin", href: "/admin" } : undefined}
+      />
     </header>
   );
 }

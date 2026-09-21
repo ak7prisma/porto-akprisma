@@ -3,6 +3,7 @@
 import { useState, useActionState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import {
   saveProjectAction,
   deleteProjectAction,
@@ -12,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/admin/SubmitButton";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import {
   Dialog,
@@ -245,9 +247,15 @@ export function ProjectForm({
         <p className="text-sm text-red-400">{String(state.error)}</p>
       )}
 
-      <Button type="submit" variant="primary" size="lg" className="w-full">
+      <SubmitButton
+        type="submit"
+        variant="primary"
+        size="lg"
+        className="w-full"
+        pendingLabel="Saving..."
+      >
         {project ? "Update Project" : "Create Project"}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }
@@ -291,7 +299,8 @@ export function ProjectPublishToggle({ project }: { project: AdminProject }) {
         setPending(false);
       }}
     >
-      {project.isPublished ? "Unpublish" : "Publish"}
+      {pending && <Loader2 className="size-4 animate-spin" />}
+      {pending ? "Working..." : project.isPublished ? "Unpublish" : "Publish"}
     </Button>
   );
 }

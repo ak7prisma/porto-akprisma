@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/admin/SubmitButton";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import type { PublicSocial } from "@/types/content";
 
@@ -75,9 +76,9 @@ export function SocialForm({ social }: { social?: PublicSocial }) {
 
       <input type="hidden" name="sort_order" value="0" />
 
-      <Button type="submit" variant="primary" size="sm" className="w-full">
+      <SubmitButton variant="primary" size="sm" className="w-full" pendingLabel="Saving...">
         {social ? "Update" : "Add social"}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }
