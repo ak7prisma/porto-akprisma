@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useActionState } from "react";
 import { updateSiteConfigAction } from "@/lib/actions/content";
+import { useActionToast } from "@/components/admin/useActionToast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +18,7 @@ export default function SiteConfigForm({
   configId?: string;
 }) {
   const [state, formAction] = useActionState(updateSiteConfigAction, null);
+  useActionToast(state, { success: "Site config saved successfully" });
   const [form, setForm] = useState({
     siteName: config.siteName,
     tagline: config.tagline,

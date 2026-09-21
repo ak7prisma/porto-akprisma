@@ -11,6 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/Button";
+import { useActionToast } from "@/components/admin/useActionToast";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import type { PublicStat } from "@/types/content";
 
 export function StatForm({ stat }: { stat?: PublicStat }) {
@@ -18,6 +20,7 @@ export function StatForm({ stat }: { stat?: PublicStat }) {
     stat ? updateStatAction : createStatAction,
     null
   );
+  useActionToast(state, { success: stat ? "Stat updated" : "Stat added" });
   const [form, setForm] = useState({
     label: stat?.label ?? "",
     subLabel: stat?.subLabel ?? "",
@@ -119,18 +122,24 @@ export function StatForm({ stat }: { stat?: PublicStat }) {
 export function StatDeleteButton({ stat }: { stat: PublicStat }) {
   const router = useRouter();
   return (
-    <form
-      action={async (fd: FormData) => {
+    <ConfirmDialog
+      title={`Delete "${stat.label}"?`}
+      description="Stat akan dihapus permanen dan tidak bisa dikembalikan."
+      confirmLabel="Delete"
+      successMessage="Stat deleted"
+      trigger={
+        <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
+          Delete
+        </Button>
+      }
+      onConfirm={async () => {
+        const fd = new FormData();
+        fd.append("id", stat.id);
         const result = await deleteStatAction(null, fd);
-        if (result?.error) console.error(result.error);
         router.refresh();
+        return result;
       }}
-    >
-      <input type="hidden" name="id" value={stat.id} />
-      <Button type="submit" variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
-        Delete
-      </Button>
-    </form>
+    />
   );
 }
 

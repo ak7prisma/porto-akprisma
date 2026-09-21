@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import {
   createSocialAction,
   updateSocialAction,
@@ -9,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/Button";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import type { PublicSocial } from "@/types/content";
 
 export function SocialForm({ social }: { social?: PublicSocial }) {
@@ -23,7 +26,9 @@ export function SocialForm({ social }: { social?: PublicSocial }) {
   return (
     <form
       action={async (fd: FormData) => {
-        await action(null, fd);
+        const result = await action(null, fd);
+        if (result?.error) toast.error(result.error);
+        else toast.success(social ? "Social link updated" : "Social link added");
       }}
       className="space-y-3 rounded-xl border border-white/10 bg-slate-900/50 p-4"
     >
@@ -78,17 +83,26 @@ export function SocialForm({ social }: { social?: PublicSocial }) {
 }
 
 export function SocialDeleteButton({ social }: { social: PublicSocial }) {
+  const router = useRouter();
   return (
-    <form
-      action={async (fd: FormData) => {
-        await deleteSocialAction(null, fd);
+    <ConfirmDialog
+      title={`Delete "${social.name}"?`}
+      description="Social link akan dihapus permanen dan tidak bisa dikembalikan."
+      confirmLabel="Delete"
+      successMessage="Social link deleted"
+      trigger={
+        <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
+          Delete
+        </Button>
+      }
+      onConfirm={async () => {
+        const fd = new FormData();
+        fd.append("id", social.id);
+        const result = await deleteSocialAction(null, fd);
+        router.refresh();
+        return result;
       }}
-    >
-      <input type="hidden" name="id" value={social.id} />
-      <Button type="submit" variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
-        Delete
-      </Button>
-    </form>
+    />
   );
 }
 
