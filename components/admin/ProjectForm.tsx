@@ -32,6 +32,7 @@ const emptyForm = {
   id: undefined as number | undefined,
   title: "",
   category: "",
+  role: "",
   description: "",
   problem: "",
   solution: "",
@@ -59,6 +60,7 @@ export function ProjectForm({
           id: project.id,
           title: project.title,
           category: project.category,
+          role: project.role,
           description: project.description,
           problem: project.problem,
           solution: project.solution,
@@ -108,6 +110,17 @@ export function ProjectForm({
             required
           />
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="role">Role / Position</Label>
+        <Input
+          id="role"
+          name="role"
+          value={form.role}
+          onChange={(e) => set("role", e.target.value)}
+          placeholder="Front-End Developer"
+        />
       </div>
 
       <div className="space-y-2">

@@ -102,6 +102,7 @@ export const siteContentFallback: PublicSiteData = {
       id: 1,
       title: "StarShop",
       category: "E-Commerce & Digital Products",
+      role: "Front-End Developer",
       description:
         "A seamless digital top-up platform designed for gamers. Features digital product store and a highly responsive user interface optimized for mobile transactions.",
       problem:
@@ -118,6 +119,7 @@ export const siteContentFallback: PublicSiteData = {
       id: 2,
       title: "Srifoton Website",
       category: "Event & Organization",
+      role: "Team Project – Front-End Developer",
       description:
         "The official event portal for HMIF Unsri's annual IT competition (Team Project). Built collaboratively to facilitate participant registration, event scheduling, and information dissemination with dynamic animations.",
       problem:
@@ -134,6 +136,7 @@ export const siteContentFallback: PublicSiteData = {
       id: 3,
       title: "My Drakor Checklist",
       category: "Personal Utility App",
+      role: "Personal Project – Front-End Developer",
       description:
         "A personalized tracking application for K-Drama enthusiasts. Allows users to manage K-Drama watchlists. Focused on simple and responsive UI.",
       problem:
