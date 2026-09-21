@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/admin/SubmitButton";
 import { useActionToast } from "@/components/admin/useActionToast";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import type { PublicStat } from "@/types/content";
@@ -112,9 +113,9 @@ export function StatForm({ stat }: { stat?: PublicStat }) {
 
       {state?.error && <p className="text-sm text-red-400">{String(state.error)}</p>}
 
-      <Button type="submit" variant="primary" size="sm" className="w-full">
+      <SubmitButton variant="primary" size="sm" className="w-full" pendingLabel="Saving...">
         {stat ? "Update stat" : "Add stat"}
-      </Button>
+      </SubmitButton>
     </form>
   );
 }

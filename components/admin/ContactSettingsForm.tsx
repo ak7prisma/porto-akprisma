@@ -7,7 +7,7 @@ import { useActionToast } from "@/components/admin/useActionToast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/Button";
+import { SubmitButton } from "@/components/admin/SubmitButton";
 
 export default function ContactSettingsForm({
   config,
@@ -91,9 +91,9 @@ export default function ContactSettingsForm({
         </p>
       )}
 
-      <Button type="submit" variant="primary" size="sm" className="w-full">
+      <SubmitButton variant="primary" size="sm" className="w-full" pendingLabel="Saving...">
         Save Contact
-      </Button>
+      </SubmitButton>
     </form>
   );
 }
